@@ -1,0 +1,47 @@
+If the computer is completely hacked, it can be recovered through this, unless it is a very powerful virus.
+
+✔️ It's a basic emergency recovery tool, mostly for gaining control and doing initial cleaning.
+
+#!/bin/bash
+
+# Safety and logs
+mkdir -p /tmp/recovery_logs
+LOG="/tmp/recovery_logs/recovery.log"
+exec &> >(tee -a "$LOG")
+
+echo "[*] Starting recovery shell..."
+
+# Mount the primary disk (assuming /dev/sda1, change if needed)
+echo "[*] Mounting root partition..."
+mkdir -p /mnt/recovery
+mount /dev/sda1 /mnt/recovery
+
+# Chroot into the system to operate within it
+echo "[*] Entering chroot..."
+mount --bind /dev /mnt/recovery/dev
+mount --bind /proc /mnt/recovery/proc
+mount --bind /sys /mnt/recovery/sys
+chroot /mnt/recovery /bin/bash << 'EOF'
+
+echo "[*] Inside chroot environment"
+
+# Ensure SSH is installed and enabled
+apt update
+apt install -y openssh-server
+systemctl enable ssh
+systemctl start ssh
+
+# Optionally set a known password for recovery
+echo "root:changeme" | chpasswd
+
+# Install ClamAV for scanning
+apt install -y clamav
+freshclam
+clamscan -r --remove /
+
+# Clean up suspicious crons or scripts (example)
+find /etc/cron* -type f -exec cat {} \; | grep -i "curl\|wget\|nc\|bash" >> /suspicious_cron.log
+
+EOF
+
+echo "[*] Recovery process completed. Check logs in /tmp/recovery_logs/"
