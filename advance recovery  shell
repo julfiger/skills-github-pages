@@ -1,0 +1,123 @@
+#!/bin/bash
+
+# Advanced Linux Recovery Script v2.0
+set -euo pipefail
+
+# Phase 0: Setup logging
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+LOG_DIR="/tmp/recovery_$TIMESTAMP"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/recovery.log"
+exec &> >(tee -a "$LOG_FILE")
+
+echo "[*] Advanced Linux Recovery Script Started"
+echo "[*] Logs saved to: $LOG_FILE"
+echo ""
+
+# Phase 1: Mount root partition
+echo "[*] Detecting partitions..."
+lsblk -f | grep -E "ext4|xfs|btrfs" | tee "$LOG_DIR/partitions.txt"
+
+read -rp "[?] Enter the device name of your root partition (e.g., /dev/sda2): " ROOT_PART
+read -rp "[?] Confirm you want to mount $ROOT_PART? (y/N): " confirm
+if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
+    echo "[!] Aborted by user."
+    exit 1
+fi
+
+echo "[*] Mounting $ROOT_PART..."
+mkdir -p /mnt/recovery
+mount "$ROOT_PART" /mnt/recovery || { echo "[!] Failed to mount."; exit 1; }
+
+echo "[*] Binding /dev, /proc, /sys..."
+for dir in dev proc sys; do
+    mount --bind /$dir /mnt/recovery/$dir
+done
+
+echo "[✓] Mounting complete."
+echo ""
+
+# Phase 2: SSH setup
+read -rp "[?] Enable SSH access in recovery system? (y/N): " enable_ssh
+if [[ "$enable_ssh" =~ ^[yY]$ ]]; then
+    chroot /mnt/recovery /bin/bash << 'EOF'
+    apt update -y
+    apt install -y openssh-server
+    systemctl enable ssh
+    systemctl start ssh
+    echo "[✓] SSH enabled."
+EOF
+
+    read -rp "[?] Set a new root password? (y/N): " set_pw
+    if [[ "$set_pw" =~ ^[yY]$ ]]; then
+        chroot /mnt/recovery passwd root
+    fi
+
+    read -rp "[?] Add SSH public key for root login? (y/N): " use_key
+    if [[ "$use_key" =~ ^[yY]$ ]]; then
+        read -rp "Paste your public key: " ssh_key
+        chroot /mnt/recovery bash -c "mkdir -p /root/.ssh && echo \"$ssh_key\" >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys"
+        echo "[✓] SSH key added."
+    fi
+else
+    echo "[*] SSH setup skipped."
+fi
+
+echo ""
+
+# Phase 3: Malware scan
+read -rp "[?] Run ClamAV scan for malware? (y/N): " scan_choice
+if [[ "$scan_choice" =~ ^[yY]$ ]]; then
+    chroot /mnt/recovery /bin/bash << 'EOF'
+    apt install -y clamav
+    systemctl stop clamav-freshclam || true
+    freshclam
+    clamscan -r --infected --log=/clamav_scan.log /
+EOF
+    echo "[✓] ClamAV scan complete. Log: /clamav_scan.log"
+
+    read -rp "[?] Auto-remove detected malware? (y/N): " auto_remove
+    if [[ "$auto_remove" =~ ^[yY]$ ]]; then
+        chroot /mnt/recovery /bin/bash << 'EOF'
+        clamscan -r --remove --log=/clamav_auto_remove.log /
+EOF
+        echo "[✓] Removal complete. Log: /clamav_auto_remove.log"
+    fi
+fi
+
+read -rp "[?] Install Rootkit Hunter (rkhunter) for extra checks? (y/N): " rkhunter_choice
+if [[ "$rkhunter_choice" =~ ^[yY]$ ]]; then
+    chroot /mnt/recovery /bin/bash << 'EOF'
+    apt install -y rkhunter
+    rkhunter --update
+    rkhunter --checkall --sk
+EOF
+    echo "[✓] rkhunter check complete."
+fi
+
+echo ""
+
+# Phase 4: Suspicious system checks
+echo "[*] Scanning for suspicious crons, services, modules..."
+
+chroot /mnt/recovery /bin/bash << 'EOF'
+LOG_DIR="/suspicious_recovery_scan"
+mkdir -p $LOG_DIR
+
+# Suspicious cron jobs
+grep -rE 'curl|wget|nc|bash|python|perl' /etc/cron* 2>/dev/null > $LOG_DIR/cron_check.log
+
+# Init scripts and systemd units
+grep -rE 'curl|wget|nc|bash|python|perl' /etc/systemd /etc/init.d 2>/dev/null > $LOG_DIR/init_check.log
+
+# Kernel modules
+lsmod > $LOG_DIR/modules_check.log
+dmesg | grep -i "module" >> $LOG_DIR/modules_check.log
+
+# rc.local
+cat /etc/rc.local 2>/dev/null > $LOG_DIR/rc_local_check.log
+
+echo "[✓] Suspicious check logs saved to: $LOG_DIR"
+EOF
+
+echo "[✔] Recovery script complete. All logs are in $LOG_DIR and /mnt/recovery/suspicious_recovery_scan"
