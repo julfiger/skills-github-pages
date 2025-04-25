@@ -1,0 +1,75 @@
+# vuln_sage_ai.py
+
+import requests
+import openai
+import random
+import json
+from urllib.parse import urlencode
+from bs4 import BeautifulSoup
+
+# --- Set your OpenAI key ---
+openai.api_key = "sk-..."  # Add your OpenAI key here
+
+class VulnSageAI:
+    def __init__(self, target_url):
+        self.target = target_url
+        self.headers = {"User-Agent": "VulnSage-AI/1.0"}
+        self.payload_log = []
+
+    def get_ai_payloads(self, vuln_type, context=None):
+        prompt = f"""
+        Generate 5 advanced {vuln_type} payloads for bug bounty testing.
+        Context: {context if context else "General"}
+        Make them unique, stealthy, and suitable for real-world use.
+        """
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7
+        )
+        result = response.choices[0].message.content.strip().split('\n')
+        return [line.strip('- ').strip() for line in result if line.strip()]
+
+    def test_payload(self, payload, param="q"):
+        full_url = f"{self.target}?{urlencode({param: payload})}"
+        try:
+            res = requests.get(full_url, headers=self.headers, timeout=5)
+            reflected = payload in res.text
+            soup = BeautifulSoup(res.text, "html.parser")
+            title = soup.title.string if soup.title else "N/A"
+            result = {
+                "payload": payload,
+                "url": full_url,
+                "status": res.status_code,
+                "reflected": reflected,
+                "title": title
+            }
+            self.payload_log.append(result)
+            return result
+        except Exception as e:
+            return {"payload": payload, "error": str(e)}
+
+    def scan(self, vuln_type="XSS"):
+        print(f"🧠 Generating AI payloads for {vuln_type}...")
+        payloads = self.get_ai_payloads(vuln_type)
+        print(f"🧪 Testing {len(payloads)} payloads on {self.target}")
+
+        for payload in payloads:
+            result = self.test_payload(payload)
+            status = "✅ Reflected" if result.get("reflected") else "❌ Not reflected"
+            print(f"- {status}: {result['url']}")
+
+    def report(self):
+        print("\n📊 Vulnerability Payload Report")
+        for entry in self.payload_log:
+            print(json.dumps(entry, indent=2))
+
+
+# Example use
+if __name__ == "__main__":
+    # Replace with a valid target (you must have permission)
+    target = "https://example.com/search"
+    ai = VulnSageAI(target)
+
+    ai.scan("XSS")   # Can be changed to SQLi, SSRF, etc.
+    ai.report()
