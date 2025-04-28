@@ -1,9 +1,5 @@
-#!/bin/bash
-
-# Advanced Linux Recovery Script v2.0
+Linux Recovery Script v2.0
 set -euo pipefail
-
-# Phase 0: Setup logging
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 LOG_DIR="/tmp/recovery_$TIMESTAMP"
 mkdir -p "$LOG_DIR"
@@ -13,18 +9,14 @@ exec &> >(tee -a "$LOG_FILE")
 echo "[*] Advanced Linux Recovery Script Started"
 echo "[*] Logs saved to: $LOG_FILE"
 echo ""
-
-# Phase 1: Mount root partition
 echo "[*] Detecting partitions..."
 lsblk -f | grep -E "ext4|xfs|btrfs" | tee "$LOG_DIR/partitions.txt"
-
 read -rp "[?] Enter the device name of your root partition (e.g., /dev/sda2): " ROOT_PART
 read -rp "[?] Confirm you want to mount $ROOT_PART? (y/N): " confirm
 if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
     echo "[!] Aborted by user."
     exit 1
 fi
-
 echo "[*] Mounting $ROOT_PART..."
 mkdir -p /mnt/recovery
 mount "$ROOT_PART" /mnt/recovery || { echo "[!] Failed to mount."; exit 1; }
@@ -37,7 +29,6 @@ done
 echo "[✓] Mounting complete."
 echo ""
 
-# Phase 2: SSH setup
 read -rp "[?] Enable SSH access in recovery system? (y/N): " enable_ssh
 if [[ "$enable_ssh" =~ ^[yY]$ ]]; then
     chroot /mnt/recovery /bin/bash << 'EOF'
@@ -65,7 +56,6 @@ fi
 
 echo ""
 
-# Phase 3: Malware scan
 read -rp "[?] Run ClamAV scan for malware? (y/N): " scan_choice
 if [[ "$scan_choice" =~ ^[yY]$ ]]; then
     chroot /mnt/recovery /bin/bash << 'EOF'
@@ -97,20 +87,18 @@ fi
 
 echo ""
 
-# Phase 4: Suspicious system checks
 echo "[*] Scanning for suspicious crons, services, modules..."
 
 chroot /mnt/recovery /bin/bash << 'EOF'
 LOG_DIR="/suspicious_recovery_scan"
 mkdir -p $LOG_DIR
 
-# Suspicious cron jobs
 grep -rE 'curl|wget|nc|bash|python|perl' /etc/cron* 2>/dev/null > $LOG_DIR/cron_check.log
 
-# Init scripts and systemd units
+
 grep -rE 'curl|wget|nc|bash|python|perl' /etc/systemd /etc/init.d 2>/dev/null > $LOG_DIR/init_check.log
 
-# Kernel modules
+
 lsmod > $LOG_DIR/modules_check.log
 dmesg | grep -i "module" >> $LOG_DIR/modules_check.log
 
